@@ -12,6 +12,8 @@ RSpec.describe "Users", type: :request do
         }.to change(User, :count).by(1)
 
         expect(response).to have_http_status(:created)
+        
+        expect(JSON.parse(response.body)['user']['token']).to_not be(nil)
       end
     end
     # Incomplete params

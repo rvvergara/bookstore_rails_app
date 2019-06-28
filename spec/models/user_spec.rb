@@ -2,27 +2,28 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'validations' do
-    let(:user) { build(:user) }
-    let(:user2) { build(:invalid_user) }
+    let(:james) { build(:user) }
+    let(:mike) { build(:invalid_user) }
     context 'complete information' do
       it 'is valid' do
-        expect(user).to be_valid
+        expect(james).to be_valid
       end
     end
 
     context 'first_name not present' do
       it 'is invalid' do
-        expect(user2).to_not be_valid
+        mike.valid?
+        expect(mike.errors[:first_name]).to include("can't be blank")
       end
     end
 
     context 'duplicate username' do
       it 'is invalid' do
-        user.save
-        username = user.username
-        duplicate_user = build(:user, username: username)
-
-        expect(duplicate_user).to_not be_valid
+        james.save
+        username = james.username
+        james_again = build(:user, username: username)
+        james_again.valid?
+        expect(james_again.errors[:username]).to include('has already been taken')
       end
     end
   end

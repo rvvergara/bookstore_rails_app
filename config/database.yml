@@ -1,0 +1,21 @@
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  timeout: 5000
+  username: rvvergara
+  password: password
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: bookstore_rails_app_development
+test:
+  <<: *default
+  database: bookstore_rails_app_test
+production:
+  <<: *default
+  database: bookstore_rails_app_production
+  username: bookstore_rails_app
+  password: <%= ENV['BOOKSTORE_RAILS_APP_DATABASE_PASSWORD'] %>

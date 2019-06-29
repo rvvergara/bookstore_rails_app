@@ -35,7 +35,7 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def prevent_unauthorized_action(user)
+  def allow_correct_user(user)
     if @current_user != user
       render_error(@current_user, "Unauthorized Request", :unauthorized)
     end

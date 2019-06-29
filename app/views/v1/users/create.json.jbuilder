@@ -5,7 +5,8 @@ json.user do
     :email,
     :username,
     :first_name,
-    :last_name
+    :last_name,
+    :access_level
   )
   json.token token
 end

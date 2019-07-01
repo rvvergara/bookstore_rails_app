@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
-  def login_as(user)
-    post "/v1/sessions", params: { email: user.email, password: user.password }
-  end
-
   describe "GET /v1/users/:username" do
     before do
       @ana = create(:user)
@@ -79,7 +75,7 @@ RSpec.describe "Users", type: :request do
 
       login_as(@marcus)
       
-      @marcus_token = JSON.parse(response.body)["user"]["token"]
+      @marcus_token = user_token
     end
     # User is logged in and changing his/her own account
     context "correct authenticated user edits first_name" do
@@ -111,7 +107,7 @@ RSpec.describe "Users", type: :request do
 
       login_as(george)
 
-      george_token = JSON.parse(response.body)["user"]["token"]
+      george_token = user_token
 
       put "/v1/users/#{@marcus.username}", params: { 
         user: {

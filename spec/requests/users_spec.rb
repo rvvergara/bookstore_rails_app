@@ -44,21 +44,20 @@ RSpec.describe "Users", type: :request do
 
   describe "PUT /v1/users" do
     before do
-      @marcus = create(:user)
+      @marcus = create(:user, username: "marcus")
       @first_name = @marcus.first_name
       post "/v1/sessions", params: {
         email: @marcus.email,
         password: "password"
       }
-
-      @token = JSON.parse(response.body)["user"]["token"]
+      @marcus_token = JSON.parse(response.body)["user"]["token"]
     end
     # User is logged in and changing his/her own account
     context "correct authenticated user edits first_name" do
       it "allows change" do
-        put "/v1/users/#{@marcus.id}", params: {
+        put "/v1/users/#{@marcus.username}", params: {
           user: { first_name: "Alfredo"}
-        }, headers: { "Authorization": "Bearer #{@token}"}
+        }, headers: { "Authorization": "Bearer #{@marcus_token}"}
         expect(response).to have_http_status(:accepted)
         @marcus.reload
         expect(@marcus.first_name).to eq("Alfredo")
@@ -68,7 +67,7 @@ RSpec.describe "Users", type: :request do
     context "user not authenticated" do
       it "returns an unauthorized http response" do
         another_token = JsonWebToken.encode({id: "another_id"})
-        put "/v1/users/#{@marcus.id}", params: {
+        put "/v1/users/#{@marcus.username}", params: {
           user: { first_name: "Alfredo"}
         }, headers: {"Authorization": "Bearer #{another_token}"}
         expect(response).to have_http_status(:unauthorized)
@@ -85,7 +84,7 @@ RSpec.describe "Users", type: :request do
 
       george_token = JSON.parse(response.body)["user"]["token"]
 
-      put "/v1/users/#{@marcus.id}", params: { 
+      put "/v1/users/#{@marcus.username}", params: { 
         user: {
           first_name: "Rowan"
         }

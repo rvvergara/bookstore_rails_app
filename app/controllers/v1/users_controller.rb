@@ -1,7 +1,7 @@
 class V1::UsersController < ApplicationController
-  before_action :authenticate!, only: :update
+  before_action :authenticate!, only: [:update, :show]
   before_action only: [:update] do
-    allow_correct_user(User.find(params[:id]))
+    allow_correct_user(User.find_by_username(params[:username]))
   end
 
   def show
@@ -25,7 +25,7 @@ class V1::UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = User.find_by_username(params[:username])
     token = request.headers['Authorization'].split(' ').last
     if @user.update(user_params)
       render :user, locals: { token: token}, status: :accepted

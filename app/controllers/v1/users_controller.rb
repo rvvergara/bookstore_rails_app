@@ -5,7 +5,12 @@ class V1::UsersController < ApplicationController
   end
 
   def show
-    
+    @user = User.find_by_username(params[:id])
+    if @user
+      render :user, locals: { token: nil}, status: :ok
+    else
+      render_error(nil, "Cannot find user", 404)
+    end
   end
 
   def create

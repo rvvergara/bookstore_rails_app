@@ -14,9 +14,10 @@ class ApplicationController < ActionController::API
   end
 
   def render_error(resource, message, status)
+    data = resource ? resource[:errors] : nil
     render json: {
       error: message,
-      data: resource[:errors]
+      data: data
     }, status: status
   end
 

@@ -1,7 +1,9 @@
 class V1::UsersController < ApplicationController
   before_action :authenticate!, only: [:update, :show]
   before_action only: [:update] do
-    allow_correct_user(User.find_by_username(params[:username]))
+    allow_correct_user(User.find_by_username(params[:username])) unless @current_user.access_level > 2
+
+    admin_allowed_change(User.find_by_username(params[:username])) unless @current_user.access_level < 3
   end
 
   def show
@@ -27,6 +29,7 @@ class V1::UsersController < ApplicationController
   def update
     @user = User.find_by_username(params[:username])
     token = request.headers['Authorization'].split(' ').last
+
     if @user.update(user_params)
       render :user, locals: { token: token}, status: :accepted
     else
@@ -38,5 +41,11 @@ class V1::UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :first_name, :last_name, :access_level)
+  end
+
+  def admin_allowed_change(user)
+    if @current_user != user && user_params.keys[0] != "access_level"
+      render_error(nil, "You can only change access level", :unauthorized)
+    end
   end
 end

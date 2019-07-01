@@ -5,7 +5,7 @@ class V1::UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by_username(params[:id])
+    @user = User.find_by_username(params[:username])
     if @user
       render :user, locals: { token: nil}, status: :ok
     else

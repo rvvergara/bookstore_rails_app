@@ -1,6 +1,36 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
+  def login_as(user)
+    post "/v1/sessions", params: { email: user.email, password: user.password }
+  end
+
+  describe "GET /v1/users/:username" do
+    before do
+      @ana = create(:user)
+      @dan = create(:user, username: "dan")
+
+      login_as(@ana)
+
+      @ana_token = JSON.parse(response.body)["user"]["token"]
+    end
+
+    context "authenticated user viewing another user's page" do
+      it "returns a status of ok" do
+        get "/v1/users/#{@dan.username}", headers: {"Authorization": "Bearer #{@ana_token}"}
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)["user"]["username"]).to eq(@dan.username)
+      end
+    end
+
+    context "unauthenticated user" do
+      it "returns unauthorized status" do
+        get "/v1/users/#{@dan.username}"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
   describe "POST /v1/users" do
     # Complete params
     context 'correct user data' do
@@ -46,10 +76,9 @@ RSpec.describe "Users", type: :request do
     before do
       @marcus = create(:user, username: "marcus")
       @first_name = @marcus.first_name
-      post "/v1/sessions", params: {
-        email: @marcus.email,
-        password: "password"
-      }
+
+      login_as(@marcus)
+      
       @marcus_token = JSON.parse(response.body)["user"]["token"]
     end
     # User is logged in and changing his/her own account
@@ -80,7 +109,7 @@ RSpec.describe "Users", type: :request do
      it "returns an unauthorized http response" do
       george = create(:user)
 
-      post "/v1/sessions", params: { email: george.email, password: "password"}
+      login_as(george)
 
       george_token = JSON.parse(response.body)["user"]["token"]
 

@@ -27,4 +27,12 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#username_downcase! method" do
+    it "downcases a username before saving a user" do
+      arthur = build(:user, username: "Arthur")
+      arthur.save
+      expect(arthur.username).to eq("arthur")
+    end
+  end
 end

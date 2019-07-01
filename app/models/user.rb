@@ -9,6 +9,8 @@ class User < ApplicationRecord
   validates :username, :first_name, :last_name, presence: true
   validates :username, uniqueness: true
 
+  private
+
   def username_downcase!
     username.downcase!
   end

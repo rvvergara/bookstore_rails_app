@@ -28,9 +28,10 @@ class V1::UsersController < ApplicationController
 
   def update
     @user = User.find_by_username(params[:username])
-    token = request.headers['Authorization'].split(' ').last
 
     if @user.update(user_params)
+      @user.reload
+      token = JsonWebToken.encode(user_data(@user))
       render :user, locals: { token: token}, status: :accepted
     else
       render_error(@user, "Cannot update account", :unprocessable_entity)

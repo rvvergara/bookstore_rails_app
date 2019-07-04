@@ -14,10 +14,10 @@ class ApplicationController < ActionController::API
   end
 
   def render_error(resource, message, status)
-    data = resource ? resource[:errors] : nil
+    errors = resource ? resource.errors : { general: "Cannot process request" }
     render json: {
-      error: message,
-      data: data
+      message: message,
+      errors: errors
     }, status: status
   end
 

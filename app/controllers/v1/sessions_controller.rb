@@ -6,7 +6,7 @@ class V1::SessionsController < ApplicationController
       token = JsonWebToken.encode(data)
       render :create, locals: {token: token}, status: :created
     else
-      render_error(@user, "Invalid credentials", :unauthorized)
+      render_error(nil, "Invalid credentials", :unauthorized)
     end
   end
 end

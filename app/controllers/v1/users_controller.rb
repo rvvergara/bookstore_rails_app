@@ -22,7 +22,7 @@ class V1::UsersController < ApplicationController
       token = JsonWebToken.encode(user_data(@user))
       render :user, locals: { token: token },status: :created
     else
-      render_error(@user, "Cannot save user", :unprocessable_entity)
+      render_error(@user, "Cannot create account", :unprocessable_entity)
     end
   end
 

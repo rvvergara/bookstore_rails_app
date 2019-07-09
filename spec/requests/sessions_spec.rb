@@ -20,7 +20,7 @@ RSpec.describe "Sessions", type: :request do
         post '/v1/sessions', params: session_params
         
         expect(response).to have_http_status(:unauthorized)
-        expect(JSON.parse(response.body)['error']).to match('Invalid credentials')
+        expect(JSON.parse(response.body)['message']).to match('Invalid credentials')
       end
     end
   end

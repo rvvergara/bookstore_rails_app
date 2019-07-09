@@ -1,5 +1,5 @@
 class V1::CategoriesController < ApplicationController
-  before_action :authenticate!, :admin_only
+  before_action :pundit_user, :admin_only
   def create
     @category = Category.new(category_params)
 

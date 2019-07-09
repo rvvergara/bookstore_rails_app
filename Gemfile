@@ -8,6 +8,7 @@ gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'devise'
 gem 'jwt'
+gem 'pundit'
 gem 'jbuilder', '~> 2.5'
 gem 'rack-cors'
 

@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  
+  include Pundit
   private
 
   def user_data(user)

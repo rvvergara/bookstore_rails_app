@@ -1,8 +1,8 @@
 class V1::CategoriesController < ApplicationController
-  before_action :pundit_user, :admin_only
+  before_action :pundit_user
   def create
     @category = Category.new(category_params)
-
+    authorize @category
     if @category.save
       render :category, status: :created
     else
@@ -20,11 +20,5 @@ class V1::CategoriesController < ApplicationController
   
   def category_params
     params.require(:category).permit(:name)
-  end
-
-  def admin_only
-    if @current_user.access_level < 2
-      render_error(nil, "You have to be an admin to do that", :unauthorized)
-    end
   end
 end

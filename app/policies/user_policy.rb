@@ -1,6 +1,17 @@
 class UserPolicy < ApplicationPolicy
   def update?
-    @user == @record
+    if @user.access_level < 2
+      return @user == @record
+    end
+    true
+  end
+
+  def permitted_attributes
+    if @user.access_level > 1 && @user != @record
+      [:access_level]
+    else
+      [:username, :email, :first_name, :last_name, :password, :password_confirmation]
+    end
   end
 
   class Scope < Scope

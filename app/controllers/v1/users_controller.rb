@@ -1,11 +1,6 @@
 class V1::UsersController < ApplicationController
   before_action :pundit_user, only: [:update, :show]
-  # before_action only: [:update] do
-  #   allow_correct_user(User.find_by_username(params[:username])) unless @current_user.access_level > 2
-
-  #   admin_allowed_change(User.find_by_username(params[:username])) unless @current_user.access_level < 3
-  # end
-
+ 
   def show
     @user = User.find_by_username(params[:username])
     if @user
@@ -29,10 +24,12 @@ class V1::UsersController < ApplicationController
   def update
     @user = User.find_by_username(params[:username])
     authorize @user
-    if @user.update(user_params)
+    if @user.update(permitted_attributes(@user)) && permitted_attributes(@user) != {}
       @user.reload
-      token = JsonWebToken.encode(user_data(@user))
-      render :user, locals: { token: token}, status: :accepted
+        token = JsonWebToken.encode(user_data(@user))
+        render :user, locals: { token: token}, status: :accepted
+    elsif permitted_attributes(@user) == {}
+        render_error(nil, "You can only change access level", :unauthorized)
     else
       render_error(@user, "Cannot update account", :unprocessable_entity)
     end

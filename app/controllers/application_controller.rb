@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
   private
 
   def user_not_authorized
-    render_error(@current_user, "Unauthorized update", :unauthorized)
+    render_error(nil, "Unauthorized update", :unauthorized)
   end
 
   def user_data(user)

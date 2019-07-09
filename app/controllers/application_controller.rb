@@ -1,6 +1,13 @@
 class ApplicationController < ActionController::API
   include Pundit
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   private
+
+  def user_not_authorized
+    render_error(@current_user, "Unauthorized update", :unauthorized)
+  end
 
   def user_data(user)
     {
@@ -21,7 +28,7 @@ class ApplicationController < ActionController::API
     }, status: status
   end
 
-  def authenticate!
+  def pundit_user
     header = request.headers['Authorization']
     header = header.split(' ').last if header
 

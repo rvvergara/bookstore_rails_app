@@ -1,10 +1,10 @@
 class V1::UsersController < ApplicationController
-  before_action :authenticate!, only: [:update, :show]
-  before_action only: [:update] do
-    allow_correct_user(User.find_by_username(params[:username])) unless @current_user.access_level > 2
+  before_action :pundit_user, only: [:update, :show]
+  # before_action only: [:update] do
+  #   allow_correct_user(User.find_by_username(params[:username])) unless @current_user.access_level > 2
 
-    admin_allowed_change(User.find_by_username(params[:username])) unless @current_user.access_level < 3
-  end
+  #   admin_allowed_change(User.find_by_username(params[:username])) unless @current_user.access_level < 3
+  # end
 
   def show
     @user = User.find_by_username(params[:username])
@@ -28,7 +28,7 @@ class V1::UsersController < ApplicationController
 
   def update
     @user = User.find_by_username(params[:username])
-
+    authorize @user
     if @user.update(user_params)
       @user.reload
       token = JsonWebToken.encode(user_data(@user))

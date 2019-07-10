@@ -2,7 +2,30 @@ require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
   describe "GET /v1/users" do
-    
+    let(:admin) { create(:user, access_level: 3)}
+
+    context "authenticated user" do
+      before do
+        (5).times do |n|
+          create(:user, username: "user-#{n}")
+        end
+      end
+
+      it "returns all users" do
+        login_as(admin)
+        admin_token = user_token
+        get "/v1/users", headers: { "Authorization": "Bearer #{admin_token}"}
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)["users"].size).to be(6)
+      end
+    end
+
+    context "visitor" do
+      it "returns unauthorized status" do
+        get "/v1/users"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
   end
 
   describe "GET /v1/users/:username" do
@@ -12,7 +35,7 @@ RSpec.describe "Users", type: :request do
 
       login_as(@ana)
 
-      @ana_token = JSON.parse(response.body)["user"]["token"]
+      @ana_token = user_token
     end
 
     context "authenticated user viewing another user's page" do

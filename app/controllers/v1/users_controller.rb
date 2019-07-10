@@ -3,9 +3,7 @@ class V1::UsersController < ApplicationController
 
   def index
     @users = User.all
-    render json: {
-      data: @users
-    }, status: :ok
+    render :users, locals: {users: @users},status: :ok
   end
  
   def show

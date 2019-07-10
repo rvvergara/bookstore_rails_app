@@ -1,5 +1,12 @@
 class V1::UsersController < ApplicationController
-  before_action :pundit_user, only: [:update, :show]
+  before_action :pundit_user, only: [:update, :show, :index]
+
+  def index
+    @users = User.all
+    render json: {
+      data: @users
+    }, status: :ok
+  end
  
   def show
     @user = User.find_by_username(params[:username])

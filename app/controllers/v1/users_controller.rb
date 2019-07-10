@@ -22,7 +22,7 @@ class V1::UsersController < ApplicationController
   end
 
   def update
-    @user = User.find_by_username(params[:username])
+    @user = User.find_by(id: params[:id])
     authorize @user
     if @user.update(permitted_attributes(@user)) && permitted_attributes(@user) != {}
       @user.reload

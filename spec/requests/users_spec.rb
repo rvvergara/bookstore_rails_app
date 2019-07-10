@@ -81,7 +81,7 @@ RSpec.describe "Users", type: :request do
     context "correct authenticated user edits first_name" do
       it "allows change" do
         put "/v1/users/#{@marcus.username}", params: {
-          user: { first_name: "Alfredo"}
+          user: { first_name: "Alfredo"}, id: @marcus.id
         }, headers: { "Authorization": "Bearer #{@marcus_token}"}
         expect(response).to have_http_status(:accepted)
         @marcus.reload
@@ -93,7 +93,7 @@ RSpec.describe "Users", type: :request do
       it "returns an unauthorized http response" do
         another_token = JsonWebToken.encode({id: "another_id"})
         put "/v1/users/#{@marcus.username}", params: {
-          user: { first_name: "Alfredo"}
+          user: { first_name: "Alfredo"}, id: @marcus.id
         }, headers: {"Authorization": "Bearer #{another_token}"}
         expect(response).to have_http_status(:unauthorized)
         @marcus.reload
@@ -112,7 +112,8 @@ RSpec.describe "Users", type: :request do
       put "/v1/users/#{@marcus.username}", params: { 
         user: {
           first_name: "Rowan"
-        }
+        },
+        id: @marcus.id
       }, headers: { "Authorization": "Bearer #{george_token}"}
 
       expect(response).to have_http_status(:unauthorized)

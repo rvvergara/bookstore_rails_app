@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
+  describe "GET /v1/users" do
+    
+  end
+
   describe "GET /v1/users/:username" do
     before do
       @ana = create(:user)
@@ -121,6 +125,38 @@ RSpec.describe "Users", type: :request do
       @marcus.reload
       expect(@marcus.first_name).to eq(@first_name)
      end
+    end
+    # Current user is admin changing another user's acess level
+    context "admin user" do
+      let(:admin) { create(:user, access_level: 3)}
+      before do
+        login_as(admin)
+        @admin_token = user_token
+      end
+
+      it "changes the user's access level" do
+        put "/v1/users/#{@marcus.username}", params: {
+          user: {
+            access_level: 2
+          },
+          id: @marcus.id
+        }, headers: { "Authorization": "Bearer #{@admin_token}"}
+        @marcus.reload
+        expect(response).to have_http_status(:accepted)
+        expect(@marcus.access_level).to be(2)
+      end
+
+      it "cannot change another user's other data" do
+        put "/v1/users/#{@marcus.username}", params: {
+          user: {
+            username: "monster"
+          },
+          id: @marcus.id
+        }, headers: { "Authorization": "Bearer #{@admin_token}"}
+        @marcus.reload
+        expect(response).to have_http_status(:unauthorized)
+        expect(@marcus.username).to eq("marcus")
+      end
     end
   end
 end

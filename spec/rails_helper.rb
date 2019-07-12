@@ -64,7 +64,3 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
-
-Pundit::Matchers.configure do |config|
-  config.user_alias = :account
-end

@@ -1,6 +1,6 @@
 class UserPolicy < ApplicationPolicy
   def update?
-    if @user.access_level < 2
+    if @user.access_level < 3
       return @user == @record
     end
     true

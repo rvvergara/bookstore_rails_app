@@ -1,27 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe CategoryPolicy, type: :policy do
-  let(:user) { User.new }
+  let(:admin) { create(:user, access_level: 2) }
+  let(:user) { create(:user, access_level: 1) }
+  let(:history) { create(:category) }
 
-  subject { described_class }
+  context "unauthorized category creation" do
+    subject { CategoryPolicy.new( user, history )}
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it { is_expected.to forbid_action(:create) }
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+  context "admin creates a category" do
+    subject { CategoryPolicy.new( admin, history) }
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it { is_expected.to permit_action(:create)}
   end
 end

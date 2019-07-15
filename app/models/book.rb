@@ -2,9 +2,9 @@ class Book < ApplicationRecord
   belongs_to :category
   validates :title,
             :subtitle,
-            :authors
+            :authors,
             :description,
-            :published_date
+            :published_date,
             :page_count,
             :thumbnail,
             :isbn,

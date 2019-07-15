@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2019_07_15_063119) do
     t.string "title", null: false
     t.string "subtitle", null: false
     t.text "description", null: false
-    t.date "published_date", null: false
+    t.string "published_date", null: false
     t.integer "page_count", null: false
     t.string "thumbnail", null: false
     t.string "authors", null: false

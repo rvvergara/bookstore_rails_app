@@ -5,7 +5,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph(3) }
     published_date { "2019-07-15" }
     page_count { Faker::Number.within(5..20) }
-    thumbnail { "MyString" }
+    thumbnail { "http://example.org" }
     authors { Faker::Name.name }
     isbn { Faker::Number.number(13) }
     association :category

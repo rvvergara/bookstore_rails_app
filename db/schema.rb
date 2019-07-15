@@ -10,11 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_04_052136) do
+ActiveRecord::Schema.define(version: 2019_07_15_063119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "books", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.string "subtitle", null: false
+    t.text "description", null: false
+    t.date "published_date", null: false
+    t.integer "page_count", null: false
+    t.string "thumbnail", null: false
+    t.string "authors", null: false
+    t.string "isbn", null: false
+    t.uuid "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -40,4 +54,5 @@ ActiveRecord::Schema.define(version: 2019_07_04_052136) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "books", "categories"
 end

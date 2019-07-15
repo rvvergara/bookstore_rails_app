@@ -1,17 +1,17 @@
 class V1::BooksController < ApplicationController
   before_action :pundit_user
   def index
-    @books = Book.all
+    @books = Book.processed_set
 
     render :books, locals: {books: @books},status: :ok
   end
 
   def create
     @book = Book.new(book_params.except(:category))
-    @book.category = Category.first_or_create(name: book_params[:category])
+    @book.category = Category.find_or_create_by(name: book_params[:category])
     authorize @book
     if @book.save
-      render :book, status: :ok
+      render :book, locals: {book: @book.processed_data},status: :ok
     else
       render_error(@book, "Cannot save book", :unprocessable_entity)
     end

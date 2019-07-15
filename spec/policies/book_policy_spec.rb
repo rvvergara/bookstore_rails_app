@@ -1,27 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe BookPolicy, type: :policy do
-  let(:user) { User.new }
+  let(:admin) { create(:user, access_level: 2)}
+  let(:user) { create(:user, access_level: 1) }
 
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "admin book creation" do
+    subject { BookPolicy.new(admin, nil) }
+    it { is_expected.to permit_action(:create)}
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "unauthorized book creation" do
+    subject { BookPolicy.new(user, nil) }
+    it { is_expected.to forbid_action(:create) }
   end
 end

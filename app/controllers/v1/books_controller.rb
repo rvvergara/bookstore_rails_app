@@ -1,6 +1,9 @@
 class V1::BooksController < ApplicationController
-  before_action :pundit_user, only: [:create]
+  before_action :pundit_user
   def index
+    @books = Book.all
+
+    render :books, locals: {books: @books},status: :ok
   end
 
   def create

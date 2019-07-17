@@ -8,6 +8,6 @@ FactoryBot.define do
     thumbnail { "http://example.org" }
     authors { Faker::Name.name }
     isbn { Faker::Number.number(13) }
-    association :category
+    category { "Action"}
   end
 end

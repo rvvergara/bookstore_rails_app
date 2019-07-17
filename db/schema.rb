@@ -25,16 +25,9 @@ ActiveRecord::Schema.define(version: 2019_07_15_063119) do
     t.string "thumbnail", null: false
     t.string "authors", null: false
     t.string "isbn", null: false
-    t.uuid "category_id", null: false
+    t.string "category", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -54,5 +47,4 @@ ActiveRecord::Schema.define(version: 2019_07_15_063119) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  add_foreign_key "books", "categories"
 end

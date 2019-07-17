@@ -33,17 +33,7 @@ RSpec.describe "Books", type: :request do
 
         expect {
           post "/v1/books", params: {
-            book: {
-              title: Faker::Book.title,
-              subtitle: Faker::Lorem.sentence(2),
-              description: Faker::Lorem.paragraph(3),
-              published_date: "2019-07-15",
-              page_count: 100,
-              thumbnail: "http://example.org",
-              authors: Faker::Name.name,
-              isbn: Faker::Number.number(13),
-              category: "Action"
-            }
+            book: attributes_for(:book)
           }, headers: { "Authorization": "Bearer #{admin_token}"}
           }.to change(Book, :count).by(1)
       end

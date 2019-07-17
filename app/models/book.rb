@@ -1,10 +1,10 @@
 class Book < ApplicationRecord
   default_scope { order(:created_at)}
-  belongs_to :category
   validates :title,
             :subtitle,
             :authors,
             :description,
+            :category,
             :published_date,
             :page_count,
             :thumbnail,
@@ -22,7 +22,7 @@ class Book < ApplicationRecord
       id: id,
       title: title,
       subtitle: subtitle,
-      category: category.name,
+      category: category,
       description: description,
       authors: authors,
       thumbnail: thumbnail,

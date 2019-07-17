@@ -7,8 +7,7 @@ class V1::BooksController < ApplicationController
   end
 
   def create
-    @book = Book.new(book_params.except(:category))
-    @book.category = Category.find_or_create_by(name: book_params[:category])
+    @book = Book.new(book_params)
     authorize @book
     if @book.save
       render :book, locals: {book: @book.processed_data},status: :ok

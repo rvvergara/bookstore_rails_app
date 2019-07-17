@@ -9,10 +9,9 @@ class CreateBooks < ActiveRecord::Migration[5.2]
       t.string :thumbnail, null: false
       t.string :authors, null: false
       t.string :isbn, null: false
-      t.uuid :category_id, null: false
+      t.string :category, null: false
 
       t.timestamps
     end
-    add_foreign_key :books, :categories, column: :category_id
   end
 end

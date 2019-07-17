@@ -1,7 +1,7 @@
 class V1::BooksController < ApplicationController
   before_action :pundit_user
   def index
-    @books = Book.search_by_term(params[:q])
+    @books = Book.all
 
     render :books,status: :ok
   end

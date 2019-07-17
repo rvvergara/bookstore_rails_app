@@ -1,1 +1,1 @@
-json.book book
+json.book @book

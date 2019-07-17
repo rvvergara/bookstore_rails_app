@@ -11,6 +11,7 @@ gem 'jwt'
 gem 'pundit'
 gem 'jbuilder', '~> 2.5'
 gem 'rack-cors'
+gem 'pg_search'
 
 group :development, :test do
   gem 'hirb'

@@ -1,4 +1,14 @@
 class Book < ApplicationRecord
+  include PgSearch
+
+  pg_search_scope :search_by_term, against: [:title, :subtitle, :authors, :description, :category, :isbn],
+    using: {
+      tsearch: {
+        any_word: true,
+        prefix: true
+      }
+    }
+
   default_scope { order(:created_at)}
   validates :title,
             :subtitle,
@@ -10,25 +20,5 @@ class Book < ApplicationRecord
             :thumbnail,
             :isbn,
             presence: true
-
-  def self.processed_set
-    Book.all.map do |book|
-      book.processed_data
-    end
-  end
-
-  def processed_data
-    {
-      id: id,
-      title: title,
-      subtitle: subtitle,
-      category: category,
-      description: description,
-      authors: authors,
-      thumbnail: thumbnail,
-      isbn: isbn,
-      page_count: page_count
-    }
-  end
 
 end

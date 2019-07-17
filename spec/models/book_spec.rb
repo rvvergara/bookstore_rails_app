@@ -17,4 +17,21 @@ RSpec.describe Book, type: :model do
       end
     end
   end
+
+  describe "#search_by_term scope" do
+    before do
+      10.times do
+        create(:book)
+      end
+
+      create(:book, title:"Cook book", subtitle: "The art and science of cooking")
+    end
+
+    context "searching for a book about cooking" do
+      it "returns 1 result" do
+        expect(Book.search_by_term("cook").size).to eq(1)
+        expect(Book.search_by_term("cooking").size).to eq(1)
+      end
+    end
+  end
 end

@@ -1,5 +1,5 @@
 class Book < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
 
   pg_search_scope :search_by_term, against: [:title, :subtitle, :authors, :description, :category, :isbn],
     using: {

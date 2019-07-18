@@ -35,4 +35,18 @@ RSpec.describe User, type: :model do
       expect(arthur.username).to eq("arthur")
     end
   end
+
+  describe "#collection method" do
+    let(:john) { create(:user) }
+    before do
+      5.times do
+        book = create(:book)
+        create(:collection_item, book_id: book.id, user_id: john.id)
+      end
+    end
+
+    it "returns an array of books w/ current_pages" do
+      expect(john.collection.size).to be(5)
+    end
+  end
 end

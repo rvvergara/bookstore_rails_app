@@ -17,6 +17,7 @@ class User < ApplicationRecord
     items.all.map do |item|
       book = item.book
       {
+        id: book.id,
         title: book.title,
         subtitle: book.subtitle,
         authors: book.authors,

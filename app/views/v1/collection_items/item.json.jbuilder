@@ -1,0 +1,1 @@
+json.item @item.book_data

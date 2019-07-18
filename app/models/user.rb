@@ -15,19 +15,7 @@ class User < ApplicationRecord
   
   def collection
     items.all.map do |item|
-      book = item.book
-      {
-        id: book.id,
-        title: book.title,
-        subtitle: book.subtitle,
-        authors: book.authors,
-        category: book.category,
-        description: book.description,
-        published_date: book.published_date,
-        isbn: book.isbn,
-        page_count: book.page_count,
-        current_page: item.current_page
-      }
+      item.book_data
     end
   end
 

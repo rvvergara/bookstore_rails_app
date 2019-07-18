@@ -9,5 +9,6 @@ class CreateCollectionItems < ActiveRecord::Migration[5.2]
     end
     add_foreign_key :collection_items, :books, column: :book_id
     add_foreign_key :collection_items, :users, column: :user_id
+    add_index :collection_items, [:user_id, :book_id], unique: true
   end
 end

@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2019_07_18_051602) do
     t.integer "current_page", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "book_id"], name: "index_collection_items_on_user_id_and_book_id", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "CollectionItems", type: :request do
-  describe "GET /v1/users/:user_username/collection_items" do
+  describe "GET /v1/users/:user_username/collection" do
     context "Arnold can see his own collection" do
       let(:arnold) { create(:user, username: "arnold") }
       let(:sly) { create(:user, username: "sly") }
@@ -18,7 +18,7 @@ RSpec.describe "CollectionItems", type: :request do
         login_as(arnold)
         arnold_token = user_token
 
-        get "/v1/users/#{arnold.username}/collection_items", headers: { "Authorization": "Bearer #{arnold_token}"}
+        get "/v1/users/#{arnold.username}/collection", headers: { "Authorization": "Bearer #{arnold_token}"}
         expect(JSON.parse(response.body)["user"]["collection"].first["title"]).to eq(lotr.title)
       end
 
@@ -26,7 +26,7 @@ RSpec.describe "CollectionItems", type: :request do
         login_as(sly)
         sly_token = user_token
 
-        get "/v1/users/#{sly.username}/collection_items", headers: { "Authorization": "Bearer #{sly_token}"}
+        get "/v1/users/#{sly.username}/collection", headers: { "Authorization": "Bearer #{sly_token}"}
 
         expect(JSON.parse(response.body)["user"]["collection"].first["title"]).to eq(game_of_thrones.title)        
       end

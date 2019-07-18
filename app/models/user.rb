@@ -11,6 +11,8 @@ class User < ApplicationRecord
 
   default_scope { order(:created_at)}
 
+  has_many :items, class_name: "CollectionItem", foreign_key: :user_id
+
   private
 
   def username_downcase!

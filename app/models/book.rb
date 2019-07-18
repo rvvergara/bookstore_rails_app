@@ -21,4 +21,5 @@ class Book < ApplicationRecord
             :isbn,
             presence: true
 
+  has_many :items, class_name: "CollectionItem", foreign_key: :book_id          
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_15_063119) do
+ActiveRecord::Schema.define(version: 2019_07_18_051602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -26,6 +26,14 @@ ActiveRecord::Schema.define(version: 2019_07_15_063119) do
     t.string "authors", null: false
     t.string "isbn", null: false
     t.string "category", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "collection_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "book_id"
+    t.uuid "user_id"
+    t.integer "current_page", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -47,4 +55,6 @@ ActiveRecord::Schema.define(version: 2019_07_15_063119) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "collection_items", "books"
+  add_foreign_key "collection_items", "users"
 end

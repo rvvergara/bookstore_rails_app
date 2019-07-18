@@ -16,6 +16,19 @@ RSpec.describe CollectionItem, type: :model do
         expect(collection_item.errors["current_page"]).to include("can't be blank")
       end
     end
+
+    context "user wants to add same book to collection" do
+      it "is raises an error" do
+        james = create(:user)
+        book = create(:book)
+        item = create(:collection_item, book_id: book.id, user_id: james.id)
+        duplicate = build(:collection_item, book_id: book.id, user_id: james.id)
+
+        duplicate.valid?
+        expect(duplicate.errors.full_messages.first).to include("Book can only be added once")
+      end
+    end
+
   end
 
   describe "associations" do

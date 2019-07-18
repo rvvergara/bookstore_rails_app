@@ -11,7 +11,24 @@ class User < ApplicationRecord
 
   default_scope { order(:created_at)}
 
-  has_many :items, class_name: "CollectionItem", foreign_key: :user_id
+  has_many :items, class_name: "CollectionItem", foreign_key: :user_id, dependent: :destroy
+  
+  def collection
+    items.all.map do |item|
+      book = item.book
+      {
+        title: book.title,
+        subtitle: book.subtitle,
+        authors: book.authors,
+        category: book.category,
+        description: book.description,
+        published_date: book.published_date,
+        isbn: book.isbn,
+        page_count: book.page_count,
+        current_page: item.current_page
+      }
+    end
+  end
 
   private
 

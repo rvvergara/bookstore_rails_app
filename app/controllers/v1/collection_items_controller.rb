@@ -3,8 +3,8 @@ class V1::CollectionItemsController < ApplicationController
 
   def index
     @user = User.find_by(username: params[:user_username])
-    @items = @user.items
+    @collection = @user.collection
 
-    render json: @items, status: :ok
+    render json: @collection, status: :ok
   end
 end

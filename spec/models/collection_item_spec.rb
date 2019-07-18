@@ -17,4 +17,20 @@ RSpec.describe CollectionItem, type: :model do
       end
     end
   end
+
+  describe "associations" do
+    context "user and book are present" do
+      it "is valid" do
+        expect(collection_item).to be_valid
+      end
+    end
+
+    context "user isn't included" do
+      it "is invalid" do
+        collection_item.user = nil
+        collection_item.valid?
+        expect(collection_item.errors["user"]).to include("must exist")
+      end
+    end
+  end
 end

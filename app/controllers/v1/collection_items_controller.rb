@@ -17,6 +17,18 @@ class V1::CollectionItemsController < ApplicationController
     end
   end
 
+  def update
+    @user = User.find_by(username: params[:user_username])
+    @item = @user.items.find(params[:id])
+    authorize(@item)
+
+    if @item.update(item_params)
+      render :item, status: :accepted
+    else
+      render_error(@item, "Cannot update page", :unprocessable_entity)
+    end
+  end
+
   private
 
   def item_params

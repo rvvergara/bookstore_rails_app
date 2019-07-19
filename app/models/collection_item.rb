@@ -10,6 +10,7 @@ class CollectionItem < ApplicationRecord
 
   def book_data
     {
+      id: id,
       book_id: book.id,
       title: book.title,
       subtitle: book.subtitle,

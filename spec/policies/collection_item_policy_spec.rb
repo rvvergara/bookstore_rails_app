@@ -1,27 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe CollectionItemPolicy, type: :policy do
-  let(:user) { User.new }
+  let(:joey) { create(:user, username: "joey") }
+  let(:mickey) { create(:user, username: "mickey") }
+  let(:rich_dad) { create(:book, title: "Rich Dad Poor Dad")}
+  let(:joey_rd_copy) { create(:collection_item, user_id: joey.id, book_id: rich_dad.id) }
 
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "joey updates his read page of Rich Dad" do
+    subject { CollectionItemPolicy.new(joey, joey_rd_copy) }
+    it { is_expected.to permit_action(:update) }
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "mickey attempts to update joey's copy of RichDad" do
+    subject { CollectionItemPolicy.new(mickey, joey_rd_copy)}
+    it { is_expected.to forbid_action(:update) }
   end
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
 end

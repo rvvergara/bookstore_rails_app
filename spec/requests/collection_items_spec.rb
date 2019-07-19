@@ -54,4 +54,32 @@ RSpec.describe "CollectionItems", type: :request do
       end
     end
   end
+
+  describe "PUT /v1/users/:user_username/collection/:id" do
+    let(:walter) { create(:user, username: "walter") }
+    let(:scorpions) { create(:book, title: "Scorpions") }
+    let(:item) { create(:collection_item, book_id: scorpions.id, user_id: walter.id) }
+
+    context "Walter is logged on and updates page of Scorpions" do
+      before do
+        login_as(walter)
+        walter_token = user_token
+
+        put "/v1/users/#{walter.username}/collection/#{item.id}", params: {
+          collection_item: { current_page: 20 }
+        }, headers: { "Authorization": "Bearer #{walter_token}"}
+
+        item.reload
+      end
+
+      it "changes the current_page of Scorpions in the database" do
+        expect(item.current_page).to be(20)
+      end
+
+      it "returns an updated item.book_data as response" do
+        expect(response).to have_http_status(:accepted)
+        expect(JSON.parse(response.body)["collection_item"]["current_page"]).to eq(item.book_data[:current_page])
+      end
+    end
+  end
 end

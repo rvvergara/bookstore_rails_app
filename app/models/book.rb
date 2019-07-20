@@ -28,6 +28,7 @@ class Book < ApplicationRecord
 
     initial_set.map do |book|
       included = !user.items.where("book_id=?", book.id).empty?
+      item_id = included ? user.items.where("book_id=?", book.id).first.id : nil
       {
       id: book.id,
       title: book.title,
@@ -39,7 +40,8 @@ class Book < ApplicationRecord
       isbn: book.isbn,
       page_count: book.page_count,
       thumbnail: book.thumbnail,
-      included: included
+      included: included,
+      item_id: item_id
       }
     end
   end

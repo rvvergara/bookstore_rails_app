@@ -25,24 +25,14 @@ class Book < ApplicationRecord
   
   def self.user_book_search(user, keyword)
     initial_set = Book.search_by_term(keyword)
-
+    # Return an array of book hashes that includes
+    # data on whether a book is in a user's collection
     initial_set.map do |book|
       included = !user.items.where("book_id=?", book.id).empty?
       item_id = included ? user.items.where("book_id=?", book.id).first.id : nil
-      {
-      id: book.id,
-      title: book.title,
-      subtitle: book.subtitle,
-      authors: book.authors,
-      category: book.category,
-      description: book.description,
-      published_date: book.published_date,
-      isbn: book.isbn,
-      page_count: book.page_count,
-      thumbnail: book.thumbnail,
-      included: included,
-      item_id: item_id
-      }
+      book.book_data[:included] = included
+      book.book_data[:item_id] = item_id
+      book_data
     end
   end
 end

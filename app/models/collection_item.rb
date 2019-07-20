@@ -6,7 +6,9 @@ class CollectionItem < ApplicationRecord
   validates :book_id, 
             uniqueness: { scope: :user_id,
                           message: "can only be added once in collection"
-                        } 
+                        }
+  
+                        default_scope { order(created_at: :desc)}
 
   def book_data
     {

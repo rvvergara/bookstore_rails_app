@@ -1,7 +1,8 @@
 class V1::SearchController < ApplicationController
-  def book_search
-    @books = Book.search_by_term(params[:q])
+  before_action :pundit_user
 
+  def book_search
+    @books = Book.user_book_search(@current_user, params[:q])
     render :books, status: :ok
   end
 end

@@ -8,7 +8,7 @@ class CollectionItem < ApplicationRecord
                           message: "can only be added once in collection"
                         }
   
-                        default_scope { order(created_at: :desc)}
+                        default_scope { order(created_at: :desc).eager_load(:user)}
 
   def book_data
     {
@@ -22,6 +22,7 @@ class CollectionItem < ApplicationRecord
       published_date: book.published_date,
       isbn: book.isbn,
       page_count: book.page_count,
+      thumbnail: book.thumbnail,
       current_page: current_page
     }
   end

@@ -15,7 +15,7 @@ class User < ApplicationRecord
   
   def collection
     items.all.map do |item|
-      item.book.data_hash
+      item.book.data_hash.merge(included: true, item_id: item.id)
     end
   end
 

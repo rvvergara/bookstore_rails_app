@@ -1,1 +1,1 @@
-json.collection_item @item.book.data_hash
+json.collection_item @item.book.data_hash.merge(included: true, item_id: @item.id)

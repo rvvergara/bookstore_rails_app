@@ -72,7 +72,7 @@ RSpec.describe "CollectionItems", type: :request do
 
       it "returns an updated item.book_data as response" do
         expect(response).to have_http_status(:accepted)
-        expect(JSON.parse(response.body)["collection_item"]["current_page"]).to eq(item.book.data_hash[:current_page])
+        expect(JSON.parse(response.body)["collection_item"][:current_page]).to eq(item.book.data_hash[:current_page])
       end
     end
   end

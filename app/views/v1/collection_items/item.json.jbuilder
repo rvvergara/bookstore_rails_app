@@ -1,1 +1,1 @@
-json.collection_item @item.book_data
+json.collection_item @item.book.data_hash

@@ -15,7 +15,7 @@ class User < ApplicationRecord
   
   def collection
     items.all.map do |item|
-      item.book_data
+      item.book.data_hash
     end
   end
 

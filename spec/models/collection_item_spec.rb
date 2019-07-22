@@ -46,15 +46,4 @@ RSpec.describe CollectionItem, type: :model do
       end
     end
   end
-
-  describe "#book_data method" do
-    let(:harry) { create(:book, title: "Harry Potter") }
-    let(:daniel) { create(:user, username: "daniel") }
-    let(:item) { create(:collection_item, user_id: daniel.id, book_id: harry.id) }
-
-    it "displays book infos plus current page" do
-      expect(item.book_data[:title]).to eq(harry.title)
-      expect(item.book_data[:current_page]).to eq(0)
-    end
-  end 
 end

@@ -18,9 +18,17 @@ RSpec.describe Book, type: :model do
     end
   end
 
+  describe "#data_hash method" do
+    let(:narnia) { create(:book, title: "Chronicles of Narnia") }
+
+    it "returns a hash with the book's info" do
+      expect(narnia.data_hash[:title]).to eq("Chronicles of Narnia")
+    end
+  end
+
   describe "#search_by_term scope" do
     before do
-      10.times do
+      3.times do
         create(:book)
       end
 

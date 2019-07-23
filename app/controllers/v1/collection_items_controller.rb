@@ -9,11 +9,10 @@ class V1::CollectionItemsController < ApplicationController
 
   def create
     @item = @current_user.items.build(item_params)
-
     if @item.save
       render :item, status: :created
     else
-      render_error(@item, "Cannot add book to collection", :unprocessable_entity)
+      render_error(@item, 'Cannot add book to collection', :unprocessable_entity)
     end
   end
 

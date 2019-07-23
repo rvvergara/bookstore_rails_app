@@ -23,7 +23,7 @@ class V1::CollectionItemsController < ApplicationController
     if @item.update(item_params)
       render :item, status: :accepted
     else
-      render_error(@item, "Cannot update page", :unprocessable_entity)
+      render_error(@item, 'Cannot update page', :unprocessable_entity)
     end
   end
 

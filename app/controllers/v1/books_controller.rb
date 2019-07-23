@@ -10,9 +10,9 @@ class V1::BooksController < ApplicationController
     @book = Book.new(book_params)
     authorize @book
     if @book.save
-      render :book,status: :ok
+      render :book, status: :ok
     else
-      render_error(@book, "Cannot save book", :unprocessable_entity)
+      render_error(@book, 'Cannot save book', :unprocessable_entity)
     end
   end
 

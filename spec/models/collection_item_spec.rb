@@ -46,4 +46,15 @@ RSpec.describe CollectionItem, type: :model do
       end
     end
   end
+
+  describe '#data instance method' do
+    let(:book) { create(:book) }
+    let(:item) { create(:collection_item, book_id: book.id)}
+
+    it 'returns book data hash w/ item infos' do
+      expect(item.data[:current_page]).to eq(0)
+      expect(item.data[:title]).to eq(book.title)
+      expect(item.data[:item_id]).to eq(item.id)
+    end
+  end
 end

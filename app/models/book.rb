@@ -26,7 +26,7 @@ class Book < ApplicationRecord
 
   def data_hash
     {
-      id: id,
+      book_id: id,
       title: title,
       subtitle: subtitle,
       authors: authors,

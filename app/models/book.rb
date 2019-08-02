@@ -1,7 +1,14 @@
 class Book < ApplicationRecord
   include PgSearch::Model
 
-  pg_search_scope :search_by_term, against: [:title, :subtitle, :authors, :description, :category, :isbn],
+  pg_search_scope :search_by_term, against: %i[
+    title
+    subtitle
+    authors
+    description
+    category
+    isbn
+  ],
     using: {
       tsearch: {
         any_word: true,
@@ -21,8 +28,9 @@ class Book < ApplicationRecord
             :isbn,
             presence: true
 
-  has_many :items, class_name: "CollectionItem", foreign_key: :book_id
-  
+  has_many :items,
+           class_name: 'CollectionItem', foreign_key: :book_id,
+           dependent: :destroy
 
   def data_hash
     {
@@ -35,7 +43,7 @@ class Book < ApplicationRecord
       published_date: published_date,
       isbn: isbn,
       page_count: page_count,
-      thumbnail: thumbnail,
+      thumbnail: thumbnail
     }
   end
 

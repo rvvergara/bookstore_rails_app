@@ -26,6 +26,32 @@ RSpec.describe Book, type: :model do
     end
   end
 
+  describe 'data_hash_for_user method' do
+    let(:ruby) { create(:book, title: 'Rails Tutorial') }
+    let(:harry) { create(:user, username: "harry") }
+    let(:jim) { create(:user, username: "jim") }
+
+    before do
+      create(:collection_item, user_id: jim.id, book_id: ruby.id)
+    end
+
+    context "book already in user's collection" do
+      it 'returns a hash with included of true and an item_id' do
+        data = ruby.data_hash_for_user(jim)
+        expect(data[:item_id]).to_not be_nil
+        expect(data[:included]).to be(true)
+      end
+    end
+
+    context "book not in user's collection" do
+      it 'returns a hash with nil item_id and included value of false' do
+        data = ruby.data_hash_for_user(harry)
+        expect(data[:item_id]).to be_nil
+        expect(data[:included]).to be(false)
+      end
+    end
+  end
+
   describe 'search_by_term scope' do
     before do
       3.times do

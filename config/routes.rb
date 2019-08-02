@@ -9,4 +9,15 @@ Rails.application.routes.draw do
     
     get 'search/books', to: "search#book_search"
   end
+
+  namespace :v2, defaults: {format: :json } do
+    resources :users, param: :username, only: [:create, :update, :show, :index] do
+      resources :collection_items, path: "collection",only: [:create, :index, :update, :destroy]
+    end
+    
+    resources :sessions, only: [:create]
+    resources :books, only: [:index, :create]
+    
+    get 'search/books', to: "search#book_search"
+  end
 end

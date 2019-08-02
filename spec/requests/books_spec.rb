@@ -23,6 +23,26 @@ RSpec.describe 'Books', type: :request do
     end
   end
 
+  describe 'GET /v1/books/:id' do
+    context 'authenticated user' do
+      let(:ruby) { create(:book, title: 'Rails Tutorial') }
+      let(:jim) { create(:user, username: "jim") }
+
+      it 'is an authorized request and returns data' do
+        create(:collection_item, user_id: jim.id, book_id: ruby.id)
+        
+        login_as(jim)
+        jim_token = user_token
+
+        get "/v1/books/#{ruby.id}", headers: { "Authorization": "Bearer #{jim_token}"}
+
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)['book']['included']).to be(true)
+        expect(JSON.parse(response.body)['book']['item_id']).to_not be(nil)
+      end
+    end
+  end
+
   describe 'POST /v1/books' do
     let(:admin) { create(:user, access_level: 2) }
 

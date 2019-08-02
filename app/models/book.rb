@@ -47,6 +47,13 @@ class Book < ApplicationRecord
     }
   end
 
+  def data_hash_for_user(user)
+    book_ids = user.collection.map { |item| item[:book_id] }
+    included = book_ids.include?(id)
+    item_id = included ? user.items.where('book_id=?', id).first.id : nil
+    data_hash.merge(included: included, item_id: item_id)
+  end
+
   def self.user_book_search(user, keyword)
     initial_set = Book.search_by_term(keyword)
     initial_set.map do |book|

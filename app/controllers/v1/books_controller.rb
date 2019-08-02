@@ -6,6 +6,12 @@ class V1::BooksController < ApplicationController
     render :books,status: :ok
   end
 
+  def show
+    @book = Book.find(params[:id]).data_hash_for_user(@current_user)
+
+    render :book, status: :ok
+  end
+
   def create
     @book = Book.new(book_params)
     authorize @book

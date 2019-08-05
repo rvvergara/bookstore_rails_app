@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Books', type: :request do
   describe 'GET /v1/books' do
+    let(:larry) { create(:user) }
     context 'authenticated user request' do
-      let(:larry) { create(:user) }
       it 'is an authorized request' do
         login_as(larry)
         larry_token = user_token
@@ -21,6 +21,36 @@ RSpec.describe 'Books', type: :request do
         end
       end
     end
+
+    context 'paginated result' do
+      before do
+        12.times do
+          create(:book)
+          login_as(larry)
+        end
+      end
+
+      context 'page 1 of results' do
+        it 'sends a response containing first 10 books' do
+          get '/v1/books', headers: {
+            "Authorization": "Bearer #{user_token}"
+          }
+
+          expect(JSON.parse(response.body)['books'].count).to be(10)
+        end
+      end
+
+      context 'page 2 or results' do
+        it 'sends a response with last 2 books' do
+          get '/v1/books?page=2', headers: {
+            "Authorization": "Bearer #{user_token}"
+          }
+
+          expect(JSON.parse(response.body)['books'].count).to be(2)
+        end
+      end
+    end
+
   end
 
   describe 'GET /v1/books/:id' do

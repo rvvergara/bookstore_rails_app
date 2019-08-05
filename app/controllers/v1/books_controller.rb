@@ -3,7 +3,7 @@ class V1::BooksController < ApplicationController
   def index
     page = params[:page] || '1'
     @books = Book.paginated(page, @current_user)
-
+    @count = Book.count
     render :books,status: :ok
   end
 

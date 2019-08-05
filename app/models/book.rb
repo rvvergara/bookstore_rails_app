@@ -16,6 +16,14 @@ class Book < ApplicationRecord
       }
     }
 
+  pg_search_scope :search_by_category, against: %i[category],
+   using: {
+     tsearch: {
+       any_word: true,
+       prefix: true
+     }
+   }
+
   default_scope { order(:created_at).eager_load(:items)}
   validates :title,
             :subtitle,

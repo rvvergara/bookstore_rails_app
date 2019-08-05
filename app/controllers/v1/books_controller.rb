@@ -2,7 +2,7 @@ class V1::BooksController < ApplicationController
   before_action :pundit_user
   def index
     page = params[:page] || '1'
-    @books = Book.paginated(page)
+    @books = Book.paginated(page, @current_user)
 
     render :books,status: :ok
   end

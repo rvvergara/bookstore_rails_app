@@ -40,9 +40,11 @@ class Book < ApplicationRecord
            class_name: 'CollectionItem', foreign_key: :book_id,
            dependent: :destroy
   
-  def self.paginated(page)
+  def self.paginated(page, user)
     offset = (page.to_i - 1)*10
-    Book.limit(10).offset(offset)
+    Book.limit(10).offset(offset).map do |book|
+      book.data_hash_for_user(user)
+    end
   end
 
   def data_hash

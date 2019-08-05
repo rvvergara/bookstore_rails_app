@@ -70,4 +70,28 @@ RSpec.describe Book, type: :model do
       end
     end
   end
+
+  describe 'search_by_category scope' do
+    before do
+      3.times do
+       create(:book, category: 'Science') 
+      end
+
+      2.times do
+        create(:book, category: 'Literature')
+      end
+    end
+
+    context 'finding all books in Science category' do
+      it 'returns 3 books' do
+        expect(Book.search_by_category('science').count).to be(3)
+      end
+    end
+
+    context 'finding all books in literature category' do
+      it 'shows no result without literature category' do
+        expect(Book.search_by_category('literature').where('category<>?', 'Literature').count).to be(0)
+      end
+    end
+  end
 end

@@ -96,6 +96,7 @@ RSpec.describe Book, type: :model do
   end
 
   describe 'paginated class method' do
+    let (:mickey) { create(:user, username: "mickey")}
     before do
       12.times do
         create(:book)
@@ -104,13 +105,13 @@ RSpec.describe Book, type: :model do
 
     context 'showing page 1 of book results' do
       it 'shows 10 results' do
-        expect(Book.paginated(1).count).to be(10)
+        expect(Book.paginated(1, mickey).count).to be(10)
       end
     end
 
     context 'showing page 2 of book results' do
       it 'shows 2 results' do
-        expect(Book.paginated(2).count).to be(2)
+        expect(Book.paginated(2, mickey).count).to be(2)
       end
     end
   end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'CollectionItems', type: :request do
   let(:arnold) { create(:user, username: 'arnold') }
   let(:sly) { create(:user, username: 'sly') }
-  let(:game_of_thrones) { create(:book, title: 'Game of Thrones') }
+  let(:game_of_thrones) { create(:book, title: 'Game of Thrones', page_count: 300) }
   let(:lotr) { create(:book, title: 'Lord of The Rings') }
   let(:item) do
     create(:collection_item, book_id: game_of_thrones.id, user_id: sly.id)

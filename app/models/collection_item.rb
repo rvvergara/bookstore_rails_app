@@ -22,7 +22,7 @@ class CollectionItem < ApplicationRecord
   private
 
   def prevent_update_above_page_count
-    if(current_page > data[:page_count])
+    if(current_page && current_page > data[:page_count])
       errors.add(:current_page, :illegal, message: "Current page can't be larger than page count")
     end
   end

@@ -19,11 +19,10 @@ class V1::CollectionItemsController < ApplicationController
   def update
     @item = @user.items.find(params[:id])
     authorize(@item)
-
     if @item.update(item_params)
       render :item, status: :accepted
     else
-      render_error(@item, 'Cannot update page', :unprocessable_entity)
+      render_error(@item, 'Cannot update page count', :unprocessable_entity)
     end
   end
 

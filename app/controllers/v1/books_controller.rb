@@ -1,7 +1,8 @@
 class V1::BooksController < ApplicationController
   before_action :pundit_user
   def index
-    @books = Book.all
+    page = params[:page] || '1'
+    @books = Book.paginated(page)
 
     render :books,status: :ok
   end

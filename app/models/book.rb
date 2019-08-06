@@ -69,12 +69,13 @@ class Book < ApplicationRecord
     data_hash.merge(included: included, item_id: item_id)
   end
 
-  def self.user_book_search(user, keyword)
+  def self.user_book_search(user, keyword, page)
     initial_set = Book.search_by_term(keyword)
+    initial_index = page.to_i - 1
     initial_set.map do |book|
       included = !user.items.where("book_id=?", book.id).empty?
       item_id = included ? user.items.where("book_id=?", book.id).first.id : nil
       book.data_hash.merge(included: included, item_id: item_id)
-    end
+    end.slice(initial_index*10, 10)
   end
 end

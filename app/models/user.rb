@@ -13,6 +13,11 @@ class User < ApplicationRecord
 
   has_many :items, class_name: "CollectionItem", foreign_key: :user_id, dependent: :destroy
   
+  def self.paginated(page)
+    offset = (page.to_i - 1)*10
+    User.limit(10).offset(offset)
+  end
+
   def collection
     items.all.map do |item|
       item.book.data_hash.merge(

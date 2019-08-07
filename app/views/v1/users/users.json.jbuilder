@@ -1,1 +1,2 @@
-json.users users
+json.users @users
+json.count @count

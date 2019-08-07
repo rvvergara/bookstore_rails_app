@@ -2,8 +2,10 @@ class V1::UsersController < ApplicationController
   before_action :pundit_user, only: %i[update show index]
 
   def index
-    @users = User.all
-    render :users, locals: { users: @users }, status: :ok
+    page = params[:page] || '1'
+    @users = User.paginated(page)
+    @count = User.count
+    render :users, status: :ok
   end
 
   def show

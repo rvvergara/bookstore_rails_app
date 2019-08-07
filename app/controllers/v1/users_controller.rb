@@ -29,7 +29,7 @@ class V1::UsersController < ApplicationController
   end
 
   def update
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by(id: params[:id]) || User.find_by(username: params[:username])
     authorize @user
     if @user.update(permitted_attributes(@user)) &&
        permitted_attributes(@user) != {}

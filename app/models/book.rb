@@ -9,22 +9,22 @@ class Book < ApplicationRecord
     category
     isbn
   ],
-    using: {
-      tsearch: {
-        any_word: true,
-        prefix: true
-      }
-    }
+                                   using: {
+                                     tsearch: {
+                                       any_word: true,
+                                       prefix: true
+                                     }
+                                   }
 
   pg_search_scope :search_by_category, against: %i[category],
-   using: {
-     tsearch: {
-       any_word: true,
-       prefix: true
-     }
-   }
+                                       using: {
+                                         tsearch: {
+                                           any_word: true,
+                                           prefix: true
+                                         }
+                                       }
 
-  default_scope { order(:created_at).eager_load(:items)}
+  default_scope { order(:created_at).eager_load(:items) }
   validates :title,
             :subtitle,
             :authors,
@@ -35,15 +35,15 @@ class Book < ApplicationRecord
             :thumbnail,
             :isbn,
             presence: true
-  
+
   validates :isbn, uniqueness: true
 
   has_many :items,
            class_name: 'CollectionItem', foreign_key: :book_id,
            dependent: :destroy
-  
+
   def self.paginated(page, user)
-    offset = (page.to_i - 1)*10
+    offset = (page.to_i - 1) * 10
     Book.limit(10).offset(offset).map do |book|
       book.data_hash_for_user(user)
     end
@@ -78,6 +78,6 @@ class Book < ApplicationRecord
       included = !user.items.where("book_id=?", book.id).empty?
       item_id = included ? user.items.where("book_id=?", book.id).first.id : nil
       book.data_hash.merge(included: included, item_id: item_id)
-    end.slice(initial_index*10, 10)
+    end.slice(initial_index * 10, 10)
   end
 end

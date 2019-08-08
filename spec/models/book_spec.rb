@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Book, type: :model do
   describe 'validations' do
     let(:harry) { build(:book) }
+    let(:orig_book) { create(:book, isbn: 'nobody-else-can-use-this-isbn-anymore') }
     context 'complete book details' do
       it 'is valid' do
         expect(harry).to be_valid
@@ -14,6 +15,14 @@ RSpec.describe Book, type: :model do
         harry.title = nil
         harry.valid?
         expect(harry.errors['title']).to include("can't be blank")
+      end
+    end
+
+    context 'duplicate isbn' do
+      it 'is invalid' do
+        duplicate_book = build(:book, isbn: orig_book.isbn)
+        duplicate_book.valid?
+        expect(duplicate_book.errors['isbn']).to include('has already been taken')
       end
     end
   end
@@ -74,7 +83,7 @@ RSpec.describe Book, type: :model do
   describe 'search_by_category scope' do
     before do
       3.times do
-       create(:book, category: 'Science') 
+        create(:book, category: 'Science')
       end
 
       2.times do
@@ -96,7 +105,7 @@ RSpec.describe Book, type: :model do
   end
 
   describe 'paginated class method' do
-    let (:mickey) { create(:user, username: "mickey")}
+    let (:mickey) { create(:user, username: "mickey") }
     before do
       12.times do
         create(:book)

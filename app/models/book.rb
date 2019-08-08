@@ -35,6 +35,8 @@ class Book < ApplicationRecord
             :thumbnail,
             :isbn,
             presence: true
+  
+  validates :isbn, uniqueness: true
 
   has_many :items,
            class_name: 'CollectionItem', foreign_key: :book_id,

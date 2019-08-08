@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe Book, type: :model do
   describe 'validations' do
     let(:harry) { build(:book) }
-    let(:orig_book) { create(:book, isbn: 'nobody-else-can-use-this-isbn-anymore') }
+    let(:orig_book) do
+      create(:book, isbn: 'nobody-else-can-use-this-isbn-anymore')
+    end
     context 'complete book details' do
       it 'is valid' do
         expect(harry).to be_valid
@@ -22,7 +24,8 @@ RSpec.describe Book, type: :model do
       it 'is invalid' do
         duplicate_book = build(:book, isbn: orig_book.isbn)
         duplicate_book.valid?
-        expect(duplicate_book.errors['isbn']).to include('has already been taken')
+        expect(duplicate_book.errors['isbn'])
+          .to include('has already been taken')
       end
     end
   end
@@ -37,8 +40,8 @@ RSpec.describe Book, type: :model do
 
   describe 'data_hash_for_user method' do
     let(:ruby) { create(:book, title: 'Rails Tutorial') }
-    let(:harry) { create(:user, username: "harry") }
-    let(:jim) { create(:user, username: "jim") }
+    let(:harry) { create(:user, username: 'harry') }
+    let(:jim) { create(:user, username: 'jim') }
 
     before do
       create(:collection_item, user_id: jim.id, book_id: ruby.id)
@@ -99,13 +102,15 @@ RSpec.describe Book, type: :model do
 
     context 'finding all books in literature category' do
       it 'shows no result without literature category' do
-        expect(Book.search_by_category('literature').where('category<>?', 'Literature').count).to be(0)
+        expect(Book.search_by_category('literature')
+        .where('category<>?', 'Literature').count)
+          .to be(0)
       end
     end
   end
 
   describe 'paginated class method' do
-    let (:mickey) { create(:user, username: "mickey") }
+    let (:mickey) { create(:user, username: 'mickey') }
     before do
       12.times do
         create(:book)

@@ -7,4 +7,10 @@ class V1::SearchController < ApplicationController
     @count = Book.search_by_term(params[:q]).count
     render :books, status: :ok
   end
+
+  def check_in_library
+    @in_library = Book.exists?(isbn: params[:isbn])
+
+    render :in_library, status: :ok
+  end
 end

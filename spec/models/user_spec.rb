@@ -23,16 +23,31 @@ RSpec.describe User, type: :model do
         username = james.username
         james_again = build(:user, username: username)
         james_again.valid?
-        expect(james_again.errors[:username]).to include('has already been taken')
+        expect(james_again.errors[:username])
+          .to include('has already been taken')
       end
     end
   end
 
-  describe "#username_downcase! method" do
-    it "downcases a username before saving a user" do
-      arthur = build(:user, username: "Arthur")
+  describe '#username_downcase! method' do
+    it 'downcases a username before saving a user' do
+      arthur = build(:user, username: 'Arthur')
       arthur.save
-      expect(arthur.username).to eq("arthur")
+      expect(arthur.username).to eq('arthur')
+    end
+  end
+
+  describe '#collection method' do
+    let(:john) { create(:user) }
+    before do
+      2.times do
+        book = create(:book)
+        create(:collection_item, book_id: book.id, user_id: john.id)
+      end
+    end
+
+    it 'returns an array of books w/ current_pages' do
+      expect(john.collection.size).to be(2)
     end
   end
 end

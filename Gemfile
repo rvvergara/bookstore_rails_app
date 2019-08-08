@@ -8,8 +8,10 @@ gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'devise'
 gem 'jwt'
+gem 'pundit'
 gem 'jbuilder', '~> 2.5'
 gem 'rack-cors'
+gem 'pg_search'
 
 group :development, :test do
   gem 'hirb'
@@ -26,4 +28,9 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
+
+group :test do
+  gem 'pundit-matchers', '~> 1.6.0'
+end
+
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

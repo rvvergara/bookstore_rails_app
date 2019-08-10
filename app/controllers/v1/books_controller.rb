@@ -28,6 +28,7 @@ class V1::BooksController < ApplicationController
     authorize @book
 
     if @book.update(book_params)
+      @book = @book.data_hash_for_user(@current_user)
       render :book, status: :accepted
     else
       render_error(@book, 'Cannot update book', :unprocessable_entity)

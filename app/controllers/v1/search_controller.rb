@@ -11,6 +11,7 @@ class V1::SearchController < ApplicationController
   def check_in_library
     @in_library = Book.exists?(isbn: params[:isbn])
 
+    @book_id = @in_library ? Book.find_by(isbn: params[:isbn]).id : nil
     render :in_library, status: :ok
   end
 end

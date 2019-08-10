@@ -50,7 +50,6 @@ RSpec.describe 'Books', type: :request do
         end
       end
     end
-
   end
 
   describe 'GET /v1/books/:id' do
@@ -60,11 +59,11 @@ RSpec.describe 'Books', type: :request do
 
       it 'is an authorized request and returns data' do
         create(:collection_item, user_id: jim.id, book_id: ruby.id)
-        
+
         login_as(jim)
         jim_token = user_token
 
-        get "/v1/books/#{ruby.id}", headers: { "Authorization": "Bearer #{jim_token}"}
+        get "/v1/books/#{ruby.id}", headers: { "Authorization": "Bearer #{jim_token}" }
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['book']['included']).to be(true)
@@ -86,6 +85,24 @@ RSpec.describe 'Books', type: :request do
             book: attributes_for(:book)
           }, headers: { "Authorization": "Bearer #{admin_token}" }
         end.to change(Book, :count).by(1)
+      end
+    end
+  end
+
+  describe 'PUT /v1/books/:id' do
+    let(:admin) { create(:user, access_level: 2) }
+    let(:alladin) { create(:book, title: "Alladin") }
+
+    context 'authorized book update' do
+      it 'sends a JSON response with book data' do
+        login_as(admin)
+        subtitle = 'Return of Jaafar'
+
+        put "/v1/books/#{alladin.id}", params: {
+          book: attributes_for(:book, subtitle: subtitle)
+        }, headers: { "Authorization": "Bearer #{user_token}" }
+        alladin.reload
+        expect(alladin.subtitle).to eq(subtitle)
       end
     end
   end

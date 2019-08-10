@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     end
 
     resources :sessions, only: [:create]
-    resources :books, only: [:index, :show, :create]
+    resources :books, only: [:index, :show, :create, :update]
 
     get 'search/books', to: 'search#book_search'
     get 'search/isbn', to: 'search#check_in_library'

@@ -17,9 +17,20 @@ class V1::BooksController < ApplicationController
     @book = Book.new(book_params)
     authorize @book
     if @book.save
-      render :book, status: :ok
+      render :book, status: :created
     else
       render_error(@book, 'Cannot save book', :unprocessable_entity)
+    end
+  end
+
+  def update
+    @book = Book.find_by(id: params[:id])
+    authorize @book
+
+    if @book.update(book_params)
+      render :book, status: :accepted
+    else
+      render_error(@book, 'Cannot update book', :unprocessable_entity)
     end
   end
 

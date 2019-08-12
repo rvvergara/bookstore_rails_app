@@ -17,6 +17,7 @@ class V1::BooksController < ApplicationController
     @book = Book.new(book_params)
     authorize @book
     if @book.save
+      @book = @book.data_hash_for_user(@current_user)
       render :book, status: :created
     else
       render_error(@book, 'Cannot save book', :unprocessable_entity)

@@ -122,6 +122,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.14.2-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.14.2-x86_64-linux)
+      racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.2.3)
     pg_search (2.3.6)
@@ -132,7 +134,8 @@ GEM
       method_source (~> 1.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
-    puma (3.12.6)
+    puma (4.3.12)
+      nio4r (~> 2.0)
     pundit (2.3.0)
       activesupport (>= 3.0.0)
     pundit-matchers (1.6.0)
@@ -219,6 +222,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap (>= 1.1.0)
@@ -233,7 +237,7 @@ DEPENDENCIES
   pg (= 1.2.3)
   pg_search
   pry-rails
-  puma (~> 3.12)
+  puma (~> 4.3)
   pundit
   pundit-matchers (~> 1.6.0)
   rack-cors

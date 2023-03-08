@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.4'
 gem 'rails', '>= 6.1', '< 6.2'
 gem 'pg', '= 1.2.3'
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.3'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'devise'
 gem 'jwt'
